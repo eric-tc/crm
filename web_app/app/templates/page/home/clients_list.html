@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Insert Client{% endblock %}
+{% block body %}
+
+<div class="container">
+
+    <h2 class="mb-2">Lista Clienti</h2>
+    
+    <ul class="list-group mb-5">
+
+        {% for row in data %}
+        <li class="list-group-item"><a href="{{ url_for('home.get_anagrafica_cliente', id=row.id, name= row.name) }}">{{
+                row.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <h2 class="mb-2">AZIONI</h2>
+    <div class="mb-5">
+        <li class="list-group-item"><a href="{{ url_for('home.insert_client') }}">Aggiungi
+                Aggiungi Cliente</a></li>
+    </div>
+
+</div>
+{% endblock %}

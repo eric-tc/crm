@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<div class="container">
+        <h2 class="mb-5"> Sales Forecasting</h2>
+        <table class="table mb-5">
+                <thead>
+                        <tr>
+                                <th class="text-center">Name</th>
+                                <th class="text-center">Q1</th>
+                                <th class="text-center">Q2</th>
+                                <th class="text-center">Q3</th>
+                                <th class="text-center">Q1_pesato</th>
+                                <th class="text-center">Q2_pesato</th>
+                                <th class="text-center">Q3_pesato</th>
+                        </tr>
+                </thead>
+                <tbody>
+                        <!-- {% for row in data %}
+                        <tr data-row-id="{{row.id}}">
+                                <td contenteditable="true" class="editable-cell" data-field="name">{{ row.name }}</td>
+                                <td contenteditable="true" class="editable-cell" data-field="email">{{ row.email }}</td>
+                                <td contenteditable="true" class="editable-cell" data-field="id">{{ row.id }}</td>
+                                <td contenteditable="true" class="editable-cell" data-field="location">{{ row.location
+                                        }}</td>
+                        </tr>
+
+                        {% endfor %} -->
+
+
+                        {% for key, value in data.items() %}
+                        <tr data-row-id="{{value.id}}">
+                                <td class="text-center" data-field="name"><b><a href="{{ url_for('home.get_anagrafica_cliente', id=value.id, name= value.name) }}">{{
+                                        value.name }}</a></b></td>
+                                <td class="text-center" data-field="q1">{{ value.valore_Q1 }} €</td>
+                                
+                                <td class="text-center" data-field="q3">{{ value.valore_Q2 }} €</td>
+                                
+                                <td class="text-center" data-field="q2">{{ value.valore_Q3 }} €</td>
+                                <td class="text-center" data-field="q2">{{ value.valore_Q1_pesato }} €</td>
+                                <td class="text-center" data-field="q1">{{ value.valore_Q2_pesato }} €</td>
+                               
+                                <td class="text-center" data-field="q3">{{ value.valore_Q3_pesato }} €</td>
+                        </tr>
+                        {% endfor %}
+                        
+                        <tr class="table-success">
+                                <td class="text-center" data-field="name"></td>
+                                <td class="text-center" data-field="name"></td>
+                                <td class="text-center" data-field="name"></td>
+                                <td class="text-center" data-field="name"></td>
+                                <td class="text-center" data-field="name"></td>
+                                <td class="text-center" data-field="name"></td>
+                                <td class="text-center" data-field="name"></td>
+                        </tr>
+
+                        <tr>
+                                <td class="text-center" data-field="name"><b>Totale</b></td>
+                                <td class="text-center" data-field="q1">{{ totale_q1 }} €</td>
+                                <td class="text-center" data-field="q2">{{ totale_q2 }} €</td>
+                                <td class="text-center" data-field="q3">{{ totale_q3 }} €</td>
+
+                                <td class="text-center" data-field="q1"><b>{{ totale_q1_pesato }} €</b></td>
+                                <td class="text-center" data-field="q2"><b>{{ totale_q2_pesato }} €</b></td>
+                                <td class="text-center" data-field="q2"><b>{{ totale_q3_pesato }} €</b></td>
+                        </tr>
+
+                </tbody>
+        </table>
+
+        <div class="mb-5">
+                <h2 class="mb-3">AZIONI </h2>
+                <li class="list-group-item"><a href="{{ url_for('home.insert_client') }}">Aggiungi
+                        Cliente</a></li>
+            </div>
+</div>
+
+<!-- Add Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+        $(document).ready(function () {
+                $('.editable-cell').blur(function () {
+                        var row = $(this).closest('tr'); // Get the closest row element
+                        var rowId = row.data('row-id'); // Get the row ID
+                        var rowData = {}; // Object to store the row data
+
+                        // Iterate through each cell in the row
+                        row.find('.editable-cell').each(function () {
+                                var field = $(this).data('field'); // Get the field identifier
+                                var value = $(this).text(); // Get the cell value
+
+                                // Store the field and value in the rowData object
+                                rowData[field] = value;
+                        });
+
+                        // Add the row ID to the row data
+                        rowData.rowId = rowId;
+
+                        // Send the updated row data to the Flask server
+                        $.ajax({
+                                type: 'POST',
+                                url: '/update',
+                                data: rowData,
+                                success: function (response) {
+                                        // Handle the response from the Flask server if needed
+                                        console.log(response);
+                                },
+                                error: function (error) {
+                                        // Handle any errors that occur during the request
+                                        console.log(error);
+                                }
+                        });
+                });
+        });
+
+
+</script>
+{% endblock %}

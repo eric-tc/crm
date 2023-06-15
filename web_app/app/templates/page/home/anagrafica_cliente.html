@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Insert Client{% endblock %}
+{% block body %}
+
+<div class="container">
+    <h2 class="mb-5">Anagrafica Cliente <b>{{name}}</b></h2>
+    <h3 class="mb-3"><b>Inormazioni Generali</b></h3>
+    <form class="mb-5" id="updateClientForm">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{data.name}}"
+                class="form-control font-weight-bold">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{data.email}}"
+                class="form-control font-weight-bold">
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+
+    <h3 class="mb-3"><b>Azioni</b></h3>
+    <div class="mb-5">
+        <li class="list-group-item"><a href="{{ url_for('home.add_preventivo', id=data.id, name= data.name) }}">Aggiungi
+                Preventivo</a></li>
+    </div>
+
+    <h3 class="mb-2"><b>Resoconto Ordini</b></h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="text-center">Nome Preventivo</th>
+                <th class="text-center" >Data possibile Vendita</th>
+                <th class="text-center">Visualizza</th>
+                <th class="text-center">Importo</th>
+                <th class="text-center">Stato</th>
+                <th class="text-center">Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in orders_data %}
+            <tr data-row-id="{{row.id}}">
+                <td class="text-center" data-field="name">{{ row.nome_preventivo }}</td>
+                <td class="text-center" data-field="name">{{ row.date }}</td>
+                <td class="text-center" data-field="path_preventivo"><a
+                        href="{{ url_for('home.show_pdf', path_pdf_preventivo=row.path_pdf_preventivo) }}">Visualizza</a>
+                </td>
+                <td class="text-center" data-field="valore_preventivo">{{ row.valore_preventivo }} €</td>
+                <td class="text-center" data-field="order_status">{{ row.order_status_id}} {{ row.order_percentage}}% </td>
+                <td class="text-center" data-field="order_status"> <a
+                        href="{{ url_for('home.update_preventivo', id=row.id, client_id=data.id, client_name= data.name) }}">Aggiorna</a>
+                </td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#updateClientForm').submit(function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Get form data
+            var formData = {
+                name: $('#name').val(),
+                email: $('#email').val(),
+                id: "{{data.id}}"
+            };
+
+            // Send form data using AJAX
+            $.ajax({
+                type: 'POST',
+                url: '/anagrafica_cliente',
+                data: formData,
+                success: function (response) {
+                    // Handle the response from the server
+                    alert('Form submitted successfully!');
+                    // Additional actions or UI updates
+                },
+                error: function (error) {
+                    // Handle any errors that occur during the AJAX request
+                    alert('An error occurred while submitting the form.');
+                }
+            });
+        });
+    });
+</script>
+
+
+{% endblock %}
