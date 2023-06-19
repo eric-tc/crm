@@ -21,7 +21,7 @@
 
     <h3 class="mb-3"><b>Azioni</b></h3>
     <div class="mb-5">
-        <li class="list-group-item"><a href="{{ url_for('home.add_preventivo', client_id=client_data.client_id, client_name= client_data.client_name) }}">Aggiungi
+        <li class="list-group-item"><a href="{{ url_for('home.add_order', client_id=client_data.client_id, client_name= client_data.client_name) }}">Aggiungi
                 Preventivo</a></li>
     </div>
 
@@ -50,10 +50,10 @@
                 <td class="text-center" data-field="valore_preventivo">{{ row.valore_preventivo }} €</td>
                 <td class="text-center" data-field="order_status">{{ row.order_status_id}} {{ row.order_percentage}}% </td>
                 <td class="text-center" data-field="order_status"> <a
-                        href="{{ url_for('home.update_preventivo', order_id=row.order_id,  client_id=client_data.client_id, client_name= client_data.client_name) }}">Aggiorna</a>
+                        href="{{ url_for('home.update_order', order_id=row.order_id,  client_id=client_data.client_id, client_name= client_data.client_name) }}">Aggiorna</a>
                 </td>
                 <td class="text-center" data-field="order_status"> <a
-                    href="{{ url_for('home.scheda_preventivo', order_id=row.order_id,  client_id=client_data.client_id, client_name= client_data.client_name) }}">Aggiorna Note</a>
+                    href="{{ url_for('home.order_notes', order_id=row.order_id,  client_id=client_data.client_id, client_name= client_data.client_name) }}">Aggiorna Note</a>
             </td>
             </tr>
 
