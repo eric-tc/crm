@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Aggiorna Preventivo{% endblock %}
+{% block body %}
+
+<div class="container">
+    <h2>Scheda Preventivo</h2>
+
+    <form method="POST" enctype="multipart/form-data"
+        action="{{ url_for('home.scheda_preventivo',order_id=order_id) }}">
+
+        <h2>REGOLE GENERALI</h2>
+
+        <ul>
+            <li> Non dire tutto al cliente. Deve rimanere con la curiosità
+                In pratica non devi dare delle soluzioni, ma indicazioni.
+            </li>
+            <li> Se il potenziale cliente di chiede delle referenze, non dirle subito. Rispondere
+                che i nostri clienti sono molto impegnati e non forniamo referenze a qualcuno con cui non abbiamo
+                nessun tipo di accordo commerciale. Speriamo che questa discrezione sia apprezzata
+                se diventerai nostro cliente
+            </li>
+            <li>
+                Non contattare mai qualcuno direttamente senza il permesso del tuo primo contatto
+            </li>
+            <li>
+                Cerca di espandere la conversazione a più persone possibili del team del cliente, in modo da avere
+                una conversazione con chi decide veramente. Più persone del tuo team riesci a connettere con persone 
+                del team cliente e più facile sarà la vendita.
+
+            </li>
+            <li>
+              Ogni volta che offri al cliente qualcosa di valore, chiedi per ricevere qualcosa in cambio.    
+            </li>
+            
+            <li>
+                La vendita è un processo iterativo   
+                <img src="{{ url_for('static', filename='images/sales/sales_cycle.png') }}" alt="Image">
+            </li>
+
+            <li>
+               Se capiamo che il cliente non è interessato o non è il momento giusto per la vendita, diciamolo chiaramente.
+            </li>
+            <li>
+                OBIETTIVO è di capire il prima possibile se la vendita andrà a buon fine oppure il cliente sta
+                solo cercando informazioni e non ha intenzione di comprare.
+            </li>
+        </ul>
+
+        <h2 class="mb-4">Qualificare il Cliente</h2>
+
+        <h3><b>Tempo</b></h3>
+
+        <div class="form-group mb-4">
+            <label for="select_field">Se avessi la soluzione adesso la implementeresti tra quanto?</label>
+            <select class="form-control" id="select_field" name="select_field">
+                <option value="option1">Entro Poche Settimane</option>
+                <option value="option2">Entro Mesi</option>
+                <option value="option3">Maggiore di 6 Mesi</option>
+            </select>
+        </div>
+
+        <h3 class="mb-4"><b>Stai parlando Con un Decisore Di Vendita</b></h3>
+
+        <div class="form-group mb-4">
+            <label for="select_field">Select Field</label>
+            <select class="form-control" id="decisore" name="decisore">
+                <option value="option1">SI</option>
+                <option value="option2">NO</option>
+            </select>
+        </div>
+        
+        
+        <h3 class="mb-4"><b>Domande Guida</b></h3>
+
+        <div class="mb-3 mb-4">
+            <label for="irrisolta" class="form-label">Da quanto tempo è una cosa irrisolta?</label>
+            <textarea type="text" class="form-control" id="irrisolta" name="irrisolta"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Avete già provato altre soluzioni? Si quali </label>
+            <textarea type="text" class="form-control" id="altre_soluzioni" name="altre_soluzioni" ></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="non_funzionano" class="form-label">Se si perchè non hanno funzionato </label>
+            <textarea type="text" class="form-control" id="non_funzionano" name="non_funzionano"></textarea>
+        </div>
+
+       
+        <div class="mb-3">
+            <label for="investimento" class="form-label">Avete già investito del capitale per risolvere il problema?</label>
+            <textarea type="text" class="form-control" id="investimento" name="investimento"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="costo_associato" class="form-label">Avete già un'idea di quanto vi costa non risolvere questo problema?</label>
+            <textarea type="text" class="form-control" id="costo_associato" name="costo_associato"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="soluzioni_proposte" class="form-label">Hai proposto soluzioni alternative oltre a quelle già testate? Sono sembrati interessati</label>
+            <textarea type="text" class="form-control" id="soluzioni_proposte" name="soluzioni_proposte" ></textarea>
+        </div>
+
+
+        <div class="mb-3">
+            <label for="sistema_regime" class="form-label">Hai già idea di come vorresti funzionasse a regime il sistema</label>
+            <textarea type="text" class="form-control" id="sistema_regime" name="sistema_regime" ></textarea>
+        </div>
+
+
+        <div class="mb-3">
+            <label for="altre_persone" class="form-label">Dobbiamo conivolgere qualcun'altro per capire se il sistema è quello che stavate cercando?</label>
+            <textarea type="text" class="form-control" id="altre_persone" name="altre_persone" ></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Qualche tuo cliente si è lamentato del tuo problema? In che modo?</label>
+            <textarea type="text" class="form-control" id="name" name="clienti_lamentele"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Ci sono stati segnali positivi nella vendita? Interesse, Tempo di risoluzione, Costo Associato Prossimo Incontro</label>
+            <textarea type="text" class="form-control" id="name" name="name" ></textarea>
+        </div>
+        
+
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</div>
+
+{% endblock %}

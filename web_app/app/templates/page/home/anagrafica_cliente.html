@@ -8,12 +8,12 @@
     <form class="mb-5" id="updateClientForm">
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{data.name}}"
+            <input type="text" class="form-control" id="name" name="name" value="{{client_data.client_name}}"
                 class="form-control font-weight-bold">
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" value="{{data.email}}"
+            <input type="email" class="form-control" id="email" name="email" value="{{client_data.client_email}}"
                 class="form-control font-weight-bold">
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
@@ -21,7 +21,7 @@
 
     <h3 class="mb-3"><b>Azioni</b></h3>
     <div class="mb-5">
-        <li class="list-group-item"><a href="{{ url_for('home.add_preventivo', id=data.id, name= data.name) }}">Aggiungi
+        <li class="list-group-item"><a href="{{ url_for('home.add_preventivo', client_id=client_data.client_id, client_name= client_data.client_name) }}">Aggiungi
                 Preventivo</a></li>
     </div>
 
@@ -36,11 +36,12 @@
                 <th class="text-center">Importo</th>
                 <th class="text-center">Stato</th>
                 <th class="text-center">Update</th>
+                <th class="text-center">Note</th>
             </tr>
         </thead>
         <tbody>
             {% for row in orders_data %}
-            <tr data-row-id="{{row.id}}">
+            <tr data-row-id="{{row.order_id}}">
                 <td class="text-center" data-field="name">{{ row.nome_preventivo }}</td>
                 <td class="text-center" data-field="name">{{ row.date }}</td>
                 <td class="text-center" data-field="path_preventivo"><a
@@ -49,8 +50,11 @@
                 <td class="text-center" data-field="valore_preventivo">{{ row.valore_preventivo }} €</td>
                 <td class="text-center" data-field="order_status">{{ row.order_status_id}} {{ row.order_percentage}}% </td>
                 <td class="text-center" data-field="order_status"> <a
-                        href="{{ url_for('home.update_preventivo', id=row.id, client_id=data.id, client_name= data.name) }}">Aggiorna</a>
+                        href="{{ url_for('home.update_preventivo', order_id=row.order_id,  client_id=client_data.client_id, client_name= client_data.client_name) }}">Aggiorna</a>
                 </td>
+                <td class="text-center" data-field="order_status"> <a
+                    href="{{ url_for('home.scheda_preventivo', order_id=row.order_id,  client_id=client_data.client_id, client_name= client_data.client_name) }}">Aggiorna Note</a>
+            </td>
             </tr>
 
             {% endfor %}
@@ -69,7 +73,7 @@
             var formData = {
                 name: $('#name').val(),
                 email: $('#email').val(),
-                id: "{{data.id}}"
+                id: "{{client_data.client_id}}"
             };
 
             // Send form data using AJAX

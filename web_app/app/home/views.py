@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, url_for, redirect, send_file
 from sqlalchemy import inspect
 
 # need to import all Tables
-from .database_schema import Clients, OrderStatus, Order
+from .database_schema import Clients, OrderStatus, Order,OrderData
 from werkzeug.utils import secure_filename
 import os
 import sys
@@ -54,6 +54,14 @@ COSE DA POTER AGGIUNGERE
 di una vendita conclusa oppure no.
 
 5) Aggiungere le spese correnti 
+
+
+
+VENDITA
+
+Scheda Cliente
+
+1) Per Ogni Preventivo Aggiungere le domande da fare per creare fiducia 
 
 """
 
@@ -222,6 +230,44 @@ def get_root_dir_abs_path() -> str:
     return getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
 
 
+
+@home.route("/scheda_preventivo", methods=["POST", "GET"])
+def scheda_preventivo():
+
+
+    order_id = request.args.get("order_id")
+    client_id = request.args.get("client_id")
+    client_name = request.args.get("client_name")
+
+    if request.method == 'POST':
+        irrisolta = request.form.get('irrisolta')
+        altre_soluzioni = request.form.get('altre_soluzioni')
+        non_funzionano = request.form.get('non_funzionano')
+        investimento = request.form.get('investimento')
+        costo_associato = request.form.get('costo_associato')
+        soluzioni_proposte = request.form.get('soluzioni_proposte')
+        sistema_regime = request.form.get('sistema_regime')
+        altre_persone = request.form.get('altre_persone')
+        clienti_lamentele = request.form.get('clienti_lamentele')
+        segnali_positivi = request.form.get('segnali_positivi')
+
+
+        form_data = OrderData(irrisolta=irrisolta, altre_soluzioni=altre_soluzioni,
+                             non_funzionano=non_funzionano, investimento=investimento,
+                             costo_associato=costo_associato, soluzioni_proposte=soluzioni_proposte,
+                             sistema_regime=sistema_regime, altre_persone=altre_persone,
+                             clienti_lamentele=clienti_lamentele, segnali_positivi=segnali_positivi,order_id=order_id)
+
+        db_instance.db.session.add(form_data)
+        db_instance.db.session.commit()
+
+        # Process the form data as needed
+        return render_template("page/home/scheda_preventivo.html",form_data=form_data)
+        
+
+
+    return render_template("page/home/scheda_preventivo.html",form_data={},order_id=order_id,client_id=client_id,client_name=client_name)
+
 @home.route("/upload_preventivo", methods=["POST", "GET"])
 def upload_preventivo():
     """
@@ -368,10 +414,10 @@ def get_anagrafica_cliente():
 
     if request.method == 'POST':
         # Submitted from form to update user value
-        id = request.form.get("id")
+        id = request.form.get("client_id")
         print(f"ID FORM {id}")
-        email = request.form.get("email")
-        name = request.form.get("name")
+        email = request.form.get("client_email")
+        name = request.form.get("client_name")
 
         client = Clients.query.filter_by(id=id).first()
 
@@ -389,13 +435,13 @@ def get_anagrafica_cliente():
 
             return render_template("page/home/anagrafica_cliente.html", name=name, data=client_data)
 
-    id = request.args.get("id")
-    name = request.args.get("name")
+    id = request.args.get("client_id")
+    name = request.args.get("client_name")
     client = Clients.query.filter_by(id=id).first()
 
     if client:
-        client_data = {'id': client.id,
-                       'name': client.name, 'email': client.email}
+        client_data = {'client_id': client.id,
+                       'client_name': client.name, 'client_email': client.email}
 
     # Recupera tutti gli ordini del cliente
     orders = Order.query.filter(Order.clients_id == client.id).all()
@@ -405,7 +451,7 @@ def get_anagrafica_cliente():
     print(f"ORDER STATUS {orders_status}")
     orders_data = []
 
-    orders_data = [{'id': order_data.id,
+    orders_data = [{'order_id': order_data.id,
                     'nome_preventivo': order_data.nome_preventivo,
                     'date': order_data.data_possibile_vendita.date(),
                     'path_pdf_preventivo': order_data.path_pdf_preventivo,
@@ -416,7 +462,7 @@ def get_anagrafica_cliente():
                    for order_data in orders]
 
     print(orders_data)
-    return render_template("page/home/anagrafica_cliente.html", name=name, data=client_data, orders_data=orders_data)
+    return render_template("page/home/anagrafica_cliente.html", name=name, client_data=client_data, orders_data=orders_data)
 
 
 @home.route("/insert_client", methods=["GET", "POST"])

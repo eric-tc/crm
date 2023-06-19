@@ -9,7 +9,7 @@
     <ul class="list-group mb-5">
 
         {% for row in data %}
-        <li class="list-group-item"><a href="{{ url_for('home.get_anagrafica_cliente', id=row.id, name= row.name) }}">{{
+        <li class="list-group-item"><a href="{{ url_for('home.get_anagrafica_cliente', client_id=row.id, client_name= row.name) }}">{{
                 row.name }}</a></li>
         {% endfor %}
     </ul>
