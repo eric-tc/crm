@@ -6,7 +6,7 @@
     <h2>Scheda Preventivo</h2>
 
     <form method="POST" enctype="multipart/form-data"
-        action="{{ url_for('home.scheda_preventivo',order_id=order_id) }}">
+        action="{{ url_for('home.order_notes',order_id=order_id, client_id=client_id, client_name=client_name) }}">
 
         <h2>REGOLE GENERALI</h2>
 

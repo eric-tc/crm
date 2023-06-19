@@ -56,7 +56,7 @@ def order_notes():
         db_instance.db.session.commit()
 
         # Process the form data as needed
-        return render_template("page/home/order_notes.html",form_data=form_data)
+        return redirect(url_for("home.get_anagrafica_cliente", client_id=client_id, client_name=client_name))
         
 
 
@@ -115,8 +115,8 @@ def upload_order():
 def update_order():
 
     id_preventivo = request.args.get("id")
-    id_cliente = request.args.get("client_id")
-    name_cliente = request.args.get("client_name")
+    client_id = request.args.get("client_id")
+    client_name = request.args.get("client_name")
     nome_preventivo = request.args.get("nome_preventivo")
     preventivo = Order.query.filter_by(id=id_preventivo).first()
 
@@ -134,7 +134,7 @@ def update_order():
             print("ADD PDF")
 
             save_directory = os.path.join(
-                get_root_dir_abs_path(), "..", "static", "uploads", name_cliente)
+                get_root_dir_abs_path(), "..", "static", "uploads", client_name)
             Path(save_directory).mkdir(parents=True, exist_ok=True)
 
             filename_path = Path(file.filename)
@@ -156,7 +156,7 @@ def update_order():
 
         db_instance.db.session.commit()
 
-        return redirect(url_for("home.anagrafica_cliente", id=id_cliente, name=name_cliente))
+        return redirect(url_for("home.get_anagrafica_cliente", client_id=client_id, client_name=client_name))
 
     print(f"ID_PREVENTIVO {id_preventivo}")
     orders_status = OrderStatus.query.all()
@@ -164,7 +164,7 @@ def update_order():
     order_status_list = [{'id': order_status.id, 'status': order_status.order_status,
                           'percentage': order_status.percentage} for order_status in orders_status]
 
-    return render_template("page/home/order_update.html", id=id_cliente, name=name_cliente, order_status_list=order_status_list)
+    return render_template("page/home/order_update.html", id=client_id, name=client_name, order_status_list=order_status_list)
 
 
 @home.route("/add_order", methods=["POST", "GET"])
