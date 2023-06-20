@@ -6,7 +6,7 @@
     <h2>Aggiorna Preventivo <b>{{name}}</b></h2>
 
     <form method="POST" enctype="multipart/form-data"
-        action="{{ url_for('home.update_preventivo', client_id=client_id, client_name= client_name) }}">
+        action="{{ url_for('home.update_order', client_id=client_id, client_name= client_name) }}">
         <div class="form-group">
             <label for="file">Select PDF File:</label>
             <input type="file" class="form-control-file" id="file" name="file">

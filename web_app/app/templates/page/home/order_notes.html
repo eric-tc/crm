@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}Aggiorna Preventivo{% endblock %}
+{% block title %}Note Preventivo{% endblock %}
 {% block body %}
 
 <div class="container">
-    <h2>Scheda Preventivo</h2>
+    <h2>Note Preventivo</h2>
 
     <form method="POST" enctype="multipart/form-data"
         action="{{ url_for('home.order_notes',order_id=order_id, client_id=client_id, client_name=client_name) }}">

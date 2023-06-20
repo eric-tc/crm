@@ -30,23 +30,16 @@ def check_table_records(table):
 """
 DOVE SONO ARRIVATO
 
-Ho completato il salvataggio del PDF nel form per aggiungere il preventivo
-Dopo aver inserito il preventivo sono reindirizzato alla lista clients. Sarebbe meglio ritornare nella scheda cliente
+Ho riscritto la gestione delle route dividendole in viws_order and views_client. Ho aggiunto le note per ogni preventivo
 
-I preventivi sono salvati nella cartella static/uploads/nome_cliente/ nome_preventivo.pdf
 
 COSE DA FARE
 
-1) Salvare il preventivo a database con il nome del flie. Devo aggiungere la nome del preventivo il timestamp OK
-In questo modo non rischio di sovrascriver i file
-2) Mostrare la lista dei preventivi nell'anagrafica cliente OK
-3) Permettere di modificare il preventivo. Utilizzo lo stesso form. OK
-3BIS) Aggiungere il pulsante show che nella tabella riassuntiva dei preventivi carica una pagina per vedere il pdf.
-La pagina esiste già si chiama /pdf devo aggiungere solo il passaggio del path da parametro in GET OK
+1) Aggiungere il pulsante chiusura preventivo. I preventivi chiusi semplicemente non vanno nel sales forecast. Potrei mettere
+un campo negli stati con 0% per indicare tutte quelle occasioni in cui c'è stato solo il primo contatto senza 
+aver mai parlato di vendita.
 
-4) Iniziare il sales forecasting avendo in memoria tutti i preventivi di clienti diversi OK
 
-5) Manca il nome del preventivo OK
 
 
 COSE DA POTER AGGIUNGERE
@@ -65,7 +58,7 @@ VENDITA
 
 Scheda Cliente
 
-1) Per Ogni Preventivo Aggiungere le domande da fare per creare fiducia 
+1) Per Ogni Preventivo Aggiungere le domande da fare per creare fiducia OK
 
 """
 
@@ -102,7 +95,8 @@ def homepage():
             "valore_Q2_pesato": 0.0,
             "valore_Q3": 0.0,
             "valore_Q3_pesato": 0.0}
-
+    
+    
     orders_status = OrderStatus.query.all()
 
     for order_status in orders_status:
@@ -131,9 +125,8 @@ def homepage():
     print(orders_status_dict[1])
     for q1 in Q1:
 
-        print(q1.order_status_id)
-        client_dict[q1.clients_id]["valore_Q1"] = client_dict[q1.clients_id]["valore_Q1"] + \
-            q1.valore_preventivo
+        print(f"ORDER CLIENT ID {q1.clients_id}")
+        client_dict[q1.clients_id]["valore_Q1"] = client_dict[q1.clients_id]["valore_Q1"] + q1.valore_preventivo
 
         valore_pesato = (float(q1.valore_preventivo) *
                          float(orders_status_dict[q1.order_status_id]["percentage"])/100)
@@ -145,8 +138,7 @@ def homepage():
 
     for q2 in Q2:
 
-        client_dict[q2.clients_id]["valore_Q2"] = client_dict[q2.clients_id]["valore_Q2"] + \
-            q2.valore_preventivo
+        client_dict[q2.clients_id]["valore_Q2"] = client_dict[q2.clients_id]["valore_Q2"] + q2.valore_preventivo
         totale_q2 = q2.valore_preventivo + totale_q2
 
         valore_pesato = (float(q2.valore_preventivo) *
@@ -156,8 +148,7 @@ def homepage():
 
     for q3 in Q3:
 
-        client_dict[q3.clients_id]["valore_Q3"] = client_dict[q3.clients_id]["valore_Q3"] + \
-            q3.valore_preventivo
+        client_dict[q3.clients_id]["valore_Q3"] = client_dict[q3.clients_id]["valore_Q3"] + q3.valore_preventivo
         totale_q3 = q3.valore_preventivo + totale_q3
 
         valore_pesato = (float(q3.valore_preventivo) *
